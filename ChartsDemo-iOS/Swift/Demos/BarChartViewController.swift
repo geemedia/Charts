@@ -68,6 +68,11 @@ class BarChartViewController: DemoBaseViewController {
         leftAxis.spaceTop = 0.15
         leftAxis.axisMinimum = 0 // FIXME: HUH?? this replaces startAtZero = YES
         
+        // Custom extra label for hidden values
+        leftAxis.extraLabel = "+30 more"
+        leftAxis.extraLabelTextColor = .brown
+        leftAxis.extraLabelExtraYOffset = -8
+        
         let rightAxis = chartView.rightAxis
         rightAxis.enabled = true
         rightAxis.labelFont = .systemFont(ofSize: 10)

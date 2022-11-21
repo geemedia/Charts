@@ -27,6 +27,12 @@ open class AxisBase: ComponentBase
     @objc open var labelFont = NSUIFont.systemFont(ofSize: 10.0)
     @objc open var labelTextColor = NSUIColor.labelOrBlack
     
+    @objc open var extraLabel: String?
+    @objc open var extraLabelFont = NSUIFont.systemFont(ofSize: 10.0)
+    @objc open var extraLabelTextColor = NSUIColor.labelOrBlack
+    @objc open var extraLabelExtraXOffset = CGFloat(0.0)
+    @objc open var extraLabelExtraYOffset = CGFloat(0.0)
+    
     @objc open var axisLineColor = NSUIColor.gray
     @objc open var axisLineWidth = CGFloat(0.5)
     @objc open var axisLineDashPhase = CGFloat(0.0)
@@ -136,9 +142,13 @@ open class AxisBase: ComponentBase
         let longest = entries.indices
             .lazy
             .map(getFormattedLabel(_:))
-            .max(by: \.count)
-
-        return longest ?? ""
+            .max(by: \.count) ?? ""
+        
+        if let extraLabel = extraLabel, extraLabel.count > longest.count {
+            return extraLabel
+        }
+        return longest
+        
     }
     
     /// - Returns: The formatted label at the specified index. This will either use the auto-formatter or the custom formatter (if one is set).

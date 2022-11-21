@@ -78,6 +78,8 @@ open class YAxisRendererHorizontalBarChart: YAxisRenderer
             positions: transformedPositions(),
             offset: axis.yOffset
         )
+        
+        drawExtraLabel(context: context, textAlign: .right)
     }
     
     open override func renderAxisLine(context: CGContext)

@@ -56,6 +56,10 @@ class HorizontalBarChartViewController: DemoBaseViewController {
         leftAxis.drawAxisLineEnabled = true
         leftAxis.drawGridLinesEnabled = true
         leftAxis.axisMinimum = 0
+        
+        // Custom extra label for hidden values
+        leftAxis.extraLabel = "+10 more"
+        leftAxis.extraLabelTextColor = .red
 
         let rightAxis = chartView.rightAxis
         rightAxis.enabled = true

@@ -78,6 +78,8 @@ open class YAxisRenderer: NSObject, AxisRenderer
                     positions: transformedPositions(),
                     offset: yoffset - axis.labelFont.lineHeight,
                     textAlign: textAlign)
+        
+        drawExtraLabel(context: context, textAlign: textAlign)
     }
     
     open func renderAxisLine(context: CGContext)
@@ -141,6 +143,21 @@ open class YAxisRenderer: NSObject, AxisRenderer
                              align: textAlign,
                              attributes: [.font: labelFont, .foregroundColor: labelTextColor])
         }
+    }
+    
+    /// draws the extra label under all y-labels
+    open func drawExtraLabel(context: CGContext, textAlign: TextAlignment)
+    {
+        guard let extraLabel = axis.extraLabel else { return }
+        
+        let xoffset = axis.xOffset
+        let yoffset = axis.extraLabelFont.lineHeight / 2.5 + axis.yOffset
+        
+        context.drawText(extraLabel,
+                         at: CGPoint(x: viewPortHandler.contentRect.minX - xoffset - axis.extraLabelExtraXOffset,
+                                     y: viewPortHandler.contentRect.maxY - yoffset - axis.extraLabelExtraYOffset),
+                         align: textAlign,
+                         attributes: [.font: axis.extraLabelFont, .foregroundColor: axis.extraLabelTextColor])
     }
     
     open func renderGridLines(context: CGContext)
