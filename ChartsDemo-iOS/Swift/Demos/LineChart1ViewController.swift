@@ -76,10 +76,6 @@ class LineChart1ViewController: DemoBaseViewController {
         leftAxis.axisMinimum = -50
         leftAxis.gridLineDashLengths = [5, 5]
         leftAxis.drawLimitLinesBehindDataEnabled = true
-        
-        // Custom extra label for hidden values
-        leftAxis.extraLabel = "+20 more"
-        leftAxis.extraLabelTextColor = .blue
 
         chartView.rightAxis.enabled = false
 

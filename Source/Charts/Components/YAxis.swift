@@ -133,16 +133,6 @@ open class YAxis: AxisBase
         return requiredSize().height
     }
     
-    @objc open func getExtraLabelSize() -> CGSize
-    {
-        let label = (extraLabel ?? "") as NSString
-        var size = label.size(withAttributes: [.font: extraLabelFont])
-        size.width += xOffset * 2.0
-        size.height += yOffset * 2.0
-        size.width = max(minWidth, min(size.width, maxWidth > 0.0 ? maxWidth : size.width))
-        return size
-    }
-    
     /// `true` if this axis needs horizontal offset, `false` ifno offset is needed.
     @objc open var needsOffset: Bool
     {

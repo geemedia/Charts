@@ -50,16 +50,18 @@ class HorizontalBarChartViewController: DemoBaseViewController {
         xAxis.labelFont = .systemFont(ofSize: 10)
         xAxis.drawAxisLineEnabled = true
         xAxis.granularity = 10
+        // Custom extra label for hidden values
+        xAxis.extraLabel = "+10 more"
+        xAxis.extraLabelTextColor = .red
+        xAxis.extraLabelFont = .systemFont(ofSize: 10)
+        xAxis.extraLabelXOffset = 10
+        xAxis.extraLabelYOffset = 5
         
         let leftAxis = chartView.leftAxis
         leftAxis.labelFont = .systemFont(ofSize: 10)
         leftAxis.drawAxisLineEnabled = true
         leftAxis.drawGridLinesEnabled = true
         leftAxis.axisMinimum = 0
-        
-        // Custom extra label for hidden values
-        leftAxis.extraLabel = "+10 more"
-        leftAxis.extraLabelTextColor = .red
 
         let rightAxis = chartView.rightAxis
         rightAxis.enabled = true

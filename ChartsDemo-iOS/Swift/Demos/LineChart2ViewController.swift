@@ -67,11 +67,6 @@ class LineChart2ViewController: DemoBaseViewController {
         leftAxis.drawGridLinesEnabled = true
         leftAxis.granularityEnabled = true
         
-        // Custom extra label for hidden values
-        leftAxis.extraLabel = "+10 more"
-        leftAxis.extraLabelTextColor = .red
-        leftAxis.extraLabelExtraYOffset = -8
-        
         let rightAxis = chartView.rightAxis
         rightAxis.labelTextColor = .red
         rightAxis.axisMaximum = 900

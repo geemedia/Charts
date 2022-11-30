@@ -120,7 +120,7 @@ open class HorizontalBarChartView: BarChartView
             // offsets for x-labels
             if xAxis.labelPosition == .bottom
             {
-                offsetLeft += max(xlabelwidth, leftAxis.getExtraLabelSize().width)
+                offsetLeft += xlabelwidth
             }
             else if xAxis.labelPosition == .top
             {
