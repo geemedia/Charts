@@ -46,17 +46,39 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
     open override func computeSize()
     {
         let longest = axis.getLongestLabel() as NSString
-        
         let labelSize = longest.size(withAttributes: [.font: axis.labelFont])
-
         let labelWidth = floor(labelSize.width + axis.xOffset * 3.5)
-        let labelHeight = labelSize.height
-        let labelRotatedSize = CGSize(width: labelSize.width, height: labelHeight).rotatedBy(degrees: axis.labelRotationAngle)
 
-        axis.labelWidth = labelWidth
-        axis.labelHeight = labelHeight
-        axis.labelRotatedWidth = round(labelRotatedSize.width + axis.xOffset * 3.5)
-        axis.labelRotatedHeight = round(labelRotatedSize.height)
+        let extraLabel = (axis.extraLabel ?? "") as NSString
+        let extraLabelSize = extraLabel.size(withAttributes: [.font: axis.extraLabelFont])
+        let extraLabelWidth = floor(extraLabelSize.width + axis.xOffset * 3.5 + axis.extraLabelXOffset)
+
+        if extraLabelWidth > labelWidth
+        {
+            let extraLabelHeight = extraLabelSize.height
+            let extraLabelRotatedSize = CGSize(
+                width: extraLabelSize.width,
+                height: extraLabelHeight
+            ).rotatedBy(degrees: axis.labelRotationAngle)
+
+            axis.labelWidth = extraLabelWidth
+            axis.labelHeight = extraLabelHeight
+            axis.labelRotatedWidth = round(extraLabelRotatedSize.width + axis.xOffset * 3.5 + axis.extraLabelXOffset)
+            axis.labelRotatedHeight = round(extraLabelRotatedSize.height)
+        }
+        else
+        {
+            let labelHeight = labelSize.height
+            let labelRotatedSize = CGSize(
+                width: labelSize.width,
+                height: labelHeight
+            ).rotatedBy(degrees: axis.labelRotationAngle)
+
+            axis.labelWidth = labelWidth
+            axis.labelHeight = labelHeight
+            axis.labelRotatedWidth = round(labelRotatedSize.width + axis.xOffset * 3.5)
+            axis.labelRotatedHeight = round(labelRotatedSize.height)
+        }
     }
 
     open override func renderAxisLabels(context: CGContext)
@@ -77,7 +99,13 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
             drawLabels(context: context, pos: viewPortHandler.contentRight - xoffset, anchor: CGPoint(x: 1.0, y: 0.5))
 
         case .bottom:
-            drawLabels(context: context, pos: viewPortHandler.contentLeft - xoffset, anchor: CGPoint(x: 1.0, y: 0.5))
+            let x = viewPortHandler.contentLeft - xoffset
+            drawLabels(context: context, pos: x, anchor: CGPoint(x: 1.0, y: 0.5))
+            drawExtraLabel(
+                context: context,
+                x: x - axis.extraLabelXOffset,
+                y: viewPortHandler.contentBottom + axis.extraLabelYOffset
+            )
 
         case .bottomInside:
             drawLabels(context: context, pos: viewPortHandler.contentLeft + xoffset, anchor: CGPoint(x: 0.0, y: 0.5))
@@ -140,6 +168,20 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
                          attributes: attributes)
     }
     
+    /// draws the extra label on the specified position
+    open func drawExtraLabel(context: CGContext, x: CGFloat, y: CGFloat)
+    {
+        guard let extraLabel = axis.extraLabel, !extraLabel.isEmpty else { return }
+        let labelRotationAngleRadians = axis.labelRotationAngle.DEG2RAD
+        context.drawText(
+            extraLabel,
+            at: CGPoint(x: x, y: y),
+            anchor: CGPoint(x: 1, y: 0),
+            angleRadians: labelRotationAngleRadians,
+            attributes: [.font: axis.extraLabelFont, .foregroundColor: axis.extraLabelTextColor]
+        )
+    }
+
     open override var gridClippingRect: CGRect
     {
         var contentRect = viewPortHandler.contentRect
