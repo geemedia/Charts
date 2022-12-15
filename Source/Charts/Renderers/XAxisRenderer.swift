@@ -161,13 +161,23 @@ open class XAxisRenderer: NSObject, AxisRenderer
 
         let labelWidth = labelSize.width
         let labelHeight = labelSize.height
+        let angle = axis.labelRotationAngle
         
-        let labelRotatedSize = labelSize.rotatedBy(degrees: axis.labelRotationAngle)
+        let labelRotatedSize = labelSize.rotatedBy(degrees: angle)
         
         axis.labelWidth = labelWidth
         axis.labelHeight = labelHeight
         axis.labelRotatedWidth = labelRotatedSize.width
         axis.labelRotatedHeight = labelRotatedSize.height
+
+        if angle != 0 {
+            let first = axis.getFormattedLabel(0)
+            let firstLabelSize = first.size(withAttributes: [.font: axis.labelFont])
+            let firstLabelRotatedSize = firstLabelSize.rotatedBy(degrees: angle)
+            axis.firstLabelRotatedWidth = firstLabelRotatedSize.width - firstLabelSize.height / 2.0
+        } else {
+            axis.firstLabelRotatedWidth = 0
+        }
     }
     
     open func renderAxisLabels(context: CGContext)

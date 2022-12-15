@@ -447,6 +447,12 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             {
                 let xlabelheight = xAxis.labelRotatedHeight + xAxis.yOffset
                 
+                let xFirstLabelWidth = xAxis.firstLabelRotatedWidth
+
+                if xFirstLabelWidth > offsetLeft {
+                    offsetLeft = xFirstLabelWidth
+                }
+
                 // offsets for x-labels
                 if xAxis.labelPosition == .bottom
                 {

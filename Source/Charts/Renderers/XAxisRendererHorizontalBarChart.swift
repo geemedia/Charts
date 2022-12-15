@@ -48,6 +48,7 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
         let longest = axis.getLongestLabel() as NSString
         let labelSize = longest.size(withAttributes: [.font: axis.labelFont])
         let labelWidth = floor(labelSize.width + axis.xOffset * 3.5)
+        let angle = axis.labelRotationAngle
 
         let extraLabel = (axis.extraLabel ?? "") as NSString
         let extraLabelSize = extraLabel.size(withAttributes: [.font: axis.extraLabelFont])
@@ -59,7 +60,7 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
             let extraLabelRotatedSize = CGSize(
                 width: extraLabelSize.width,
                 height: extraLabelHeight
-            ).rotatedBy(degrees: axis.labelRotationAngle)
+            ).rotatedBy(degrees: angle)
 
             axis.labelWidth = extraLabelWidth
             axis.labelHeight = extraLabelHeight
@@ -72,12 +73,21 @@ open class XAxisRendererHorizontalBarChart: XAxisRenderer
             let labelRotatedSize = CGSize(
                 width: labelSize.width,
                 height: labelHeight
-            ).rotatedBy(degrees: axis.labelRotationAngle)
+            ).rotatedBy(degrees: angle)
 
             axis.labelWidth = labelWidth
             axis.labelHeight = labelHeight
             axis.labelRotatedWidth = round(labelRotatedSize.width + axis.xOffset * 3.5)
             axis.labelRotatedHeight = round(labelRotatedSize.height)
+        }
+
+        if angle != 0 {
+            let first = axis.getFormattedLabel(0)
+            let firstLabelSize = first.size(withAttributes: [.font: axis.labelFont])
+            let firstLabelRotatedSize = firstLabelSize.rotatedBy(degrees: angle)
+            axis.firstLabelRotatedWidth = firstLabelRotatedSize.width - firstLabelSize.height / 2.0
+        } else {
+            axis.firstLabelRotatedWidth = 0
         }
     }
 
